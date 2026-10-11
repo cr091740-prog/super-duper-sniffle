@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cine-mática: Tus Ejercicios de Física</title>
+    <style>
+        /* Un poco de estilo para que se vea de lujo */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #e94560;
+            text-align: center;
+            padding: 20px;
+        }
+        .contenedor {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #16213e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        h1 {
+            color: #fff;
+        }
+        h2 {
+            color: #0f3460;
+            background-color: #e94560;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        video {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 4px solid #0f3460;
+            background-color: #000;
+        }
+        .botones {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #e94560;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        button:hover {
+            background-color: #ff6b81;
+            transform: scale(1.05);
+        }
+        button:disabled {
+            background-color: #555;
+            color: #888;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+        #descripcion {
+            font-size: 1.2em;
+            color: #a2a2bd;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+        <h1>🍿 Cine-mática 🎬</h1>
+        <!-- Aquí se pondrá el título del problema automáticamente -->
+        <h2 id="titulo">Cargando la función...</h2>
+        
+        <video id="reproductor" controls>
+            <source id="fuente-video" src="" type="video/mp4">
+            Tu navegador es más antiguo que las leyes de Newton y no soporta videos.
+        </video>
+
+        <!-- Un pequeño resumen del problema -->
+        <p id="descripcion"></p>
+
+        <div class="botones">
+            <button id="btn-anterior" onclick="cambiarVideo(-1)">⬅️ Anterior</button>
+            <button id="btn-siguiente" onclick="cambiarVideo(1)">Siguiente ➡️</button>
+        </div>
+    </div>
+
+    <script>
+        // ¡Aquí está la magia! Tu lista VIP de ejercicios vinculando tus archivos con el documento de problemas.
+        const ejercicios = [
+            { titulo: "Ejercicio 1: El Jet en los Cielos ✈️", archivo: "ejercicio1_cielo_nubes.mp4", desc: "Un jet vuela a altitud constante. ¡Abróchate el cinturón!" },
+            { titulo: "Ejercicio 2: El Ave Voladora 🦆", archivo: "ejercicio2_pato.mp4", desc: "Las coordenadas de un ave volando. Cuidado con los picotazos." },
+            { titulo: "Ejercicio 3: El Rinoceronte Veloz 🦏", archivo: "ejercicio3_rinoceronte.mp4", desc: "Un rinoceronte en el origen de las coordenadas. ¡Corre por tu vida!" },
+            { titulo: "Ejercicio 4: Los Grillos Saltarines 🦗", archivo: "ejercicio4_grillos.mp4", desc: "Chirpy y Milada saltan de un acantilado. ¿Deportes extremos para insectos?" },
+            { titulo: "Ejercicio 5: El Balón del Novato 🏈", archivo: "ejercicio5_balon.mp4", desc: "Un mariscal de campo lanza un balón. ¡Touchdown a la vista!" },
+            { titulo: "Ejercicio 6: La Moneda y la Jirafa 🦒", archivo: "ejercicio6_moneda.mp4", desc: "Gana una jirafa de peluche en la feria lanzando una moneda. ¡Puntería pura!" },
+            { titulo: "Ejercicio 7: El Globo y la Piedra 🎈", archivo: "ejercicio7_globo.mp4", desc: "Tirando piedras desde un globo que desciende. ¡Cuidado abajo!" },
+            { titulo: "Ejercicio 8: La Lavadora Loca 🧺", archivo: "ejercicio8_lavadora.mp4", desc: "Triplicando la aceleración de la lavadora. ¡Tu ropa saldrá mareada!" },
+            { titulo: "Ejercicio 9: La Tierra Girando 🌍", archivo: "ejercicio9_tierra.mp4", desc: "¿Qué pasaría con la aceleración radial si la Tierra girara muy rápido?" },
+            { titulo: "Ejercicio 10: El Rotor del Helicóptero 🚁", archivo: "ejercicio10_rotor.mp4", desc: "Un modelo de aspas girando a 550 rpm en el túnel de viento." },
+            { titulo: "Ejercicio 11: El Traje G 🧑‍🚀", archivo: "ejercicio11_traje_g.mp4", desc: "Pruebas extremas de fuerza G. ¡No comas antes de subirte a la centrífuga!" },
+            { titulo: "Ejercicio 12: Órbitas Espaciales 🪐", archivo: "ejercicio12_orbitas.mp4", desc: "La Tierra y Mercurio de paseo orbital alrededor del Sol." }
+        ];
+
+        let indiceActual = 0;
+
+        function cargarVideo(indice) {
+            const videoElement = document.getElementById("reproductor");
+            const sourceElement = document.getElementById("fuente-video");
+            
+            // Actualizamos los textos
+            document.getElementById("titulo").innerText = ejercicios[indice].titulo;
+            document.getElementById("descripcion").innerText = ejercicios[indice].desc;
+            
+            // Cambiamos la ruta del video al archivo correspondiente
+            sourceElement.src = ejercicios[indice].archivo;
+            
+            // Recargamos el reproductor para que lea el nuevo archivo sin recargar la página entera
+            videoElement.load();
+            
+            // Controlamos los botones para no irnos al infinito
+            document.getElementById("btn-anterior").disabled = (indice === 0);
+            document.getElementById("btn-siguiente").disabled = (indice === ejercicios.length - 1);
+        }
+
+        function cambiarVideo(direccion) {
+            indiceActual += direccion;
+            cargarVideo(indiceActual);
+        }
+
+        // Cargamos el primer video de la cartelera al iniciar la página
+        cargarVideo(indiceActual);
+    </script>
+</body>
+</html>
